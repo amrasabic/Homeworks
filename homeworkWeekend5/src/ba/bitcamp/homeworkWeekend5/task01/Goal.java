@@ -6,13 +6,13 @@ package ba.bitcamp.homeworkWeekend5.task01;
  */
 public class Goal extends StoryElement{
 
-	private static final int EASY = 0;
-	private static final int DIFFICULT = 1;
-	private static final int IMPOSSIBLE = 2;
+	static final int EASY = 0;
+	static final int DIFFICULT = 1;
+	static final int IMPOSSIBLE = 2;
 	
-	private String goal;
+	protected String name;
 	private int difficulty;
-	private int event;
+	private String event;
 	private Character toWho;
 	
 	/**
@@ -22,9 +22,9 @@ public class Goal extends StoryElement{
 	 * @param whatWillHappen - event that will occur
 	 * @param toWho - character who will be affected by this event
 	 */
-	public Goal(String goal, int difficulty, int event, Character toWho) {
+	public Goal(String name, int difficulty, String event, Character toWho) {
 
-		this.goal = goal;
+		this.name = name;
 		this.difficulty = difficulty;
 		this.event = event;
 		this.toWho = toWho;
@@ -36,7 +36,7 @@ public class Goal extends StoryElement{
 		return difficulty;
 	}
 	
-	public int getEvent() {
+	public String getEvent() {
 		return event;
 	}
 

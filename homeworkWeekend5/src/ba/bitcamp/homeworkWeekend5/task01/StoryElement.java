@@ -26,4 +26,7 @@ public abstract class StoryElement {
 		this.name = "STElement";
 	}
 
+	public String getName() {
+		return this.name;
+	}
 }

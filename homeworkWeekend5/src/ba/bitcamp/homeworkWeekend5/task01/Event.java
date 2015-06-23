@@ -7,10 +7,10 @@ package ba.bitcamp.homeworkWeekend5.task01;
  */
 public class Event {
 
-	private static final int DEFEAT = 0;
-	private static final int FRIENDSHIP = 1;
-	private static final int LOVE = 2;
-	private static final int REVENGE = 3;
-	private static final int MANIPULATION = 4;
+	protected static final int DEFEAT = 0;
+	protected static final int FRIENDSHIP = 1;
+	protected static final int LOVE = 2;
+	protected static final int REVENGE = 3;
+	protected static final int MANIPULATION = 4;
 	
 }

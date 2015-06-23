@@ -7,10 +7,10 @@ package ba.bitcamp.homeworkWeekend5.task01;
  */
 public class Character extends StoryElement {
 	// declaration of parameters
-	private static final int FEMALE = 0;
-	private static final int MALE = 1;
-	private static final int CAPABLE = 0;
-	private static final int INCAPABLE = 1;
+	protected static final int FEMALE = 0;
+	protected static final int MALE = 1;
+	protected static final int CAPABLE = 0;
+	protected static final int INCAPABLE = 1;
 
 	private int gender;
 	private boolean isAlive;
@@ -32,14 +32,6 @@ public class Character extends StoryElement {
 
 	// getters and setters
 	
-	public int getGender() {
-		return gender;
-	}
-
-	public void setGender(int gender) {
-		this.gender = gender;
-	}
-
 	public boolean isAlive() {
 		return isAlive;
 	}
@@ -48,12 +40,12 @@ public class Character extends StoryElement {
 		this.isAlive = isAlive;
 	}
 
-	public int getIsCapable() {
+	public int isCapable() {
 		return isCapable;
 	}
 
-	public void setIsCapable(int isCapable) {
-		this.isCapable = isCapable;
+	public void setIsCapable() {
+		this.isCapable = CAPABLE;
 	}
 
 
@@ -64,11 +56,9 @@ public class Character extends StoryElement {
 	 * 
 	 * @param character - character to disable
 	 */
-	public void disableChar(Character character) {
+	public void disableChar() {
 
-		if (character.isCapable == CAPABLE) {
 			isCapable = INCAPABLE;
-		}
 	}
 	
 	/**
@@ -78,11 +68,9 @@ public class Character extends StoryElement {
 	 * 
 	 * @param character - character to kill
 	 */
-	public void killChar(Character character) {
+	public void killChar() {
 
-		if (character.isAlive = true) {
-			character.isAlive = false;
-		}
+			isAlive = false;
 	}
 	
 	@Override
