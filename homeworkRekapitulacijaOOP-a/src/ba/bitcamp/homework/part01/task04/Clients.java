@@ -42,12 +42,12 @@ public class Clients extends Computer implements Connectable {
 	 * Sets value of computer to value of method parameter, if it is a value != null
 	 * @throws IllegalArgumentException 
 	 */
-	public void connect(Computer c) throws IllegalArgumentException {
+	public void connect(Computer computer) throws IllegalArgumentException {
 
 		if (computer != null) {
 			throw new IllegalArgumentException("Client already has computer.");
 		} else {
-			computer = c;
+			this.computer = computer;
 		}
 
 	}
