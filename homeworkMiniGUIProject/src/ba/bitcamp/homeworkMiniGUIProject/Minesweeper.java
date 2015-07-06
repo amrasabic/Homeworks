@@ -60,8 +60,11 @@ public class Minesweeper extends JFrame {
 		eight = new ImageIcon("src/eight.png");
 
 		try {
+			do{
 			// window to enter number value for size of field
-			number = Integer.parseInt(JOptionPane.showInputDialog("Enter a number to set size of field: "));	
+			number = Integer.parseInt(JOptionPane.showInputDialog("Number should be larger then three (3).\n"
+					+ "Enter a number to set NxN Minesweeper: "));	
+			} while (number < 3);
 			// assigning value to matrix size
 			matrix1 = new int[number][number];
 			// generating matrix size buttons
@@ -69,7 +72,7 @@ public class Minesweeper extends JFrame {
 		} catch (NumberFormatException e) {
 			System.exit(0);
 		}
-			
+					
 		// setting layout for frame
 		setLayout(new GridLayout(number, number));
 		// generating number of mines equal to number enter 
