@@ -15,7 +15,7 @@ public class Minesweeper extends JFrame {
 
 	private static final long serialVersionUID = -1019010246829572299L;
 	// declaration of parameters
-	private static int number = 0;
+	private static int number;
 	private static int[][] matrix1;
 	private static JButton[][] buttons;
 
@@ -34,7 +34,12 @@ public class Minesweeper extends JFrame {
 	private ImageIcon six;
 	private ImageIcon seven;
 	private ImageIcon eight;
-
+	// icon at start
+	private ImageIcon shock;
+	// icon if lost
+	private ImageIcon droped;
+	//icon if won
+	private ImageIcon victory;
 	private int size = 40;
 	int[][] matrix;
 	
@@ -42,6 +47,7 @@ public class Minesweeper extends JFrame {
 	 * Constructor
 	 */
 	public Minesweeper() {
+
 		// adding and setting image locations
 		flag = new ImageIcon("src/flag.png");
 		mine = new ImageIcon("src/mine.png");
@@ -58,13 +64,18 @@ public class Minesweeper extends JFrame {
 		six = new ImageIcon("src/six.png");
 		seven = new ImageIcon("src/seven.png");
 		eight = new ImageIcon("src/eight.png");
-
+		
+		shock = new ImageIcon("src/shock.png");
+		droped = new ImageIcon("src/droped.png");
+		victory = new ImageIcon("src/victory.png");
+		
 		try {
 			do{
 			// window to enter number value for size of field
-			number = Integer.parseInt(JOptionPane.showInputDialog("Number should be larger then three (3).\n"
-					+ "Enter a number to set NxN Minesweeper: "));	
-			} while (number < 3);
+			String s = (String)(JOptionPane.showInputDialog(null, "Number should be in range (3 - 25).\nEnter a number to set NxN Minesweeper: ", 
+					"Minesweeper", JOptionPane.INFORMATION_MESSAGE, shock, null, ""));	
+			number = Integer.parseInt(s);
+			} while (number < 3 || number > 25);
 			// assigning value to matrix size
 			matrix1 = new int[number][number];
 			// generating matrix size buttons
@@ -76,7 +87,7 @@ public class Minesweeper extends JFrame {
 		// setting layout for frame
 		setLayout(new GridLayout(number, number));
 		// generating number of mines equal to number enter 
-		for (int i = 0; i < number; i++) {
+		for (int i = 0; i < number  + number/3; i++) {
 			matrix1[((int) (Math.random() * number))][((int) (Math.random() * number))] = -1;
 
 		}
@@ -92,10 +103,11 @@ public class Minesweeper extends JFrame {
 		}
 		// let the game begins
 		for (int i = 0; i < buttons.length; i++) {
-			for (int j = 0; j < buttons.length; j++) {
+			for (int j = 0; j < buttons[i].length; j++) {
 				// adding buttons setting opaque
 				buttons[i][j] = new JButton();
 				buttons[i][j].setOpaque(true);
+				buttons[i][j].setBackground(new Color(93, 46, 141));
 				// add mouse listener
 				buttons[i][j].addMouseListener(new MouseAdapter() {
 
@@ -122,7 +134,7 @@ public class Minesweeper extends JFrame {
 												}
 											}
 											// new window when game over
-											if (JOptionPane.showConfirmDialog(null,	"GAME OVER!! \nPLAY AGAIN?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+											if (JOptionPane.showConfirmDialog(null,	"GAME OVER!! \nPLAY AGAIN?", "Game Over!",  JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, droped) == JOptionPane.YES_OPTION) {
 												// closing old minesweeper window
 												dispose();
 												// opening new one
@@ -143,7 +155,7 @@ public class Minesweeper extends JFrame {
 													}
 												}
 											}
-											if (JOptionPane.showConfirmDialog(null,"YOU WON \nPLAY AGAIN?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+											if (JOptionPane.showConfirmDialog(null,"YOU WON \nPLAY AGAIN?", "Won!!!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, victory) == JOptionPane.YES_OPTION) {
 												// closing old minesweeper window
 												dispose();
 												// opening new one
