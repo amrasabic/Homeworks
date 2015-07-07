@@ -101,9 +101,10 @@ public class Minesweeper extends JFrame {
 				System.out.printf("%2d", matrix[i][j]);
 			}
 		}
+		
 		// let the game begins
-		for (int i = 0; i < buttons.length; i++) {
-			for (int j = 0; j < buttons[i].length; j++) {
+		for (int i = 0; i < number; i++) {
+			for (int j = 0; j < number; j++) {
 				// adding buttons setting opaque
 				buttons[i][j] = new JButton();
 				buttons[i][j].setOpaque(true);
@@ -115,6 +116,8 @@ public class Minesweeper extends JFrame {
 					public void mouseClicked(MouseEvent e) {
 						// action on left click
 						if (e.getButton() == 1) {
+
+							try{
 							for (int i = 0; i < buttons.length; i++) {
 								for (int j = 0; j < buttons[i].length; j++) {
 									// if any of buttons clicked
@@ -169,6 +172,12 @@ public class Minesweeper extends JFrame {
 									}
 								}
 							}
+							
+							
+							} catch(ArrayIndexOutOfBoundsException ex){
+								
+							}
+							
 							// action on right click
 						} else if (e.getButton() == 3) {
 							for (int i = 0; i < buttons.length; i++) {
