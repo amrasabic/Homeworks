@@ -1,9 +1,13 @@
 package ba.bitcamp.homeworkMiniGUIProject;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,28 +22,13 @@ public class Minesweeper extends JFrame {
 	private static int number;
 	private static int[][] matrix1;
 	private static JButton[][] buttons;
+	
 
-	private ImageIcon mine;
-	private ImageIcon flag;
+	// icon shock at start
+	// icon droped if lost
+	// icon victory if won
+	private ImageIcon mine, flag, zero, one, two, three, four, five, six, seven, eight, shock, droped, victory; 
 
-//	private ImageIcon blue;
-//	private ImageIcon purple;
-
-	private ImageIcon zero;
-	private ImageIcon one;
-	private ImageIcon two;
-	private ImageIcon three;
-	private ImageIcon four;
-	private ImageIcon five;
-	private ImageIcon six;
-	private ImageIcon seven;
-	private ImageIcon eight;
-	// icon at start
-	private ImageIcon shock;
-	// icon if lost
-	private ImageIcon droped;
-	//icon if won
-	private ImageIcon victory;
 	private int size = 40;
 	int[][] matrix;
 	
@@ -49,31 +38,29 @@ public class Minesweeper extends JFrame {
 	public Minesweeper() {
 
 		// adding and setting image locations
-		flag = new ImageIcon("src/flag.png");
-		mine = new ImageIcon("src/mine.png");
+		flag = new ImageIcon(Minesweeper.class.getResource("/resources/flag.png"));
+		mine = new ImageIcon(Minesweeper.class.getResource("/resources/mine.png"));
 
-//		blue = new ImageIcon("src/blueButton.png");
-//		purple = new ImageIcon("src/purpleButton.png");
-
-		zero = new ImageIcon("src/zero.png");
-		one = new ImageIcon("src/one.png");
-		two = new ImageIcon("src/two.png");
-		three = new ImageIcon("src/three.png");
-		four = new ImageIcon("src/four.png");
-		five = new ImageIcon("src/five.png");
-		six = new ImageIcon("src/six.png");
-		seven = new ImageIcon("src/seven.png");
-		eight = new ImageIcon("src/eight.png");
+		zero = new ImageIcon(Minesweeper.class.getResource("/resources/zero.png"));
+		one = new ImageIcon(Minesweeper.class.getResource("/resources/one.png"));
+		two = new ImageIcon(Minesweeper.class.getResource("/resources/two.png"));
+		three = new ImageIcon(Minesweeper.class.getResource("/resources/three.png"));
+		four = new ImageIcon(Minesweeper.class.getResource("/resources/four.png"));
+		five = new ImageIcon(Minesweeper.class.getResource("/resources/five.png"));
+		six = new ImageIcon(Minesweeper.class.getResource("/resources/six.png"));
+		seven = new ImageIcon(Minesweeper.class.getResource("/resources/seven.png"));
+		eight = new ImageIcon(Minesweeper.class.getResource("/resources/eight.png"));
 		
-		shock = new ImageIcon("src/shock.png");
-		droped = new ImageIcon("src/droped.png");
-		victory = new ImageIcon("src/victory.png");
+		shock = new ImageIcon(Minesweeper.class.getResource("/resources/shock.png"));
+		droped = new ImageIcon(Minesweeper.class.getResource("/resources/droped.png"));
+		victory = new ImageIcon(Minesweeper.class.getResource("/resources/victory.png"));
 		
 		try {
 			do{
 			// window to enter number value for size of field
-			String s = (String)(JOptionPane.showInputDialog(null, "Number should be in range (3 - 25).\nEnter a number to set NxN Minesweeper: ", 
-					"Minesweeper", JOptionPane.INFORMATION_MESSAGE, shock, null, ""));	
+			String s = (String)(JOptionPane.showInputDialog(null, "Number should be in range (3 - 25)."
+					+ "\nEnter a number to set NxN Minesweeper: ", "Minesweeper", 
+					JOptionPane.INFORMATION_MESSAGE, shock, null, ""));	
 			number = Integer.parseInt(s);
 			} while (number < 3 || number > 25);
 			// assigning value to matrix size
@@ -136,14 +123,28 @@ public class Minesweeper extends JFrame {
 													}
 												}
 											}
+											int x = JOptionPane.showOptionDialog(null, "GAME OVER!! \nPLAY AGAIN?", "Game Over!", 
+														JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, droped, new String[]{"Yes","No","Github.com"}, null);
+											 
 											// new window when game over
-											if (JOptionPane.showConfirmDialog(null,	"GAME OVER!! \nPLAY AGAIN?", "Game Over!",  JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, droped) == JOptionPane.YES_OPTION) {
+											if (x == JOptionPane.YES_OPTION) {
 												// closing old minesweeper window
 												dispose();
 												// opening new one
 												new Minesweeper();
+											} else if(x == JOptionPane.CANCEL_OPTION){
+												
+												try {
+													Desktop.getDesktop().browse(new URI("https://github.com/amrasabic/homeworks/tree/homeworkMiniGUIProject/homeworkMiniGUIProject"));
+												} catch (IOException e1) {
+													// TODO Auto-generated catch block
+													e1.printStackTrace();
+												} catch (URISyntaxException e2) {
+													// TODO Auto-generated catch block
+													e2.printStackTrace();
+												}
+												dispose();
 											} else {
-												// system exit
 												System.exit(0);
 											}
 
@@ -158,7 +159,8 @@ public class Minesweeper extends JFrame {
 													}
 												}
 											}
-											if (JOptionPane.showConfirmDialog(null,"YOU WON \nPLAY AGAIN?", "Won!!!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, victory) == JOptionPane.YES_OPTION) {
+											if (JOptionPane.showConfirmDialog(null,"YOU WON \nPLAY AGAIN?", "Won!!!", 
+													JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, victory) == JOptionPane.YES_OPTION) {
 												// closing old minesweeper window
 												dispose();
 												// opening new one
@@ -248,6 +250,7 @@ public class Minesweeper extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		
 		new Minesweeper();
 	}
 
@@ -366,13 +369,12 @@ public class Minesweeper extends JFrame {
 				}
 			}
 		}
-		// are those counters equal?
+		// are those counters equal, if they are return true, else false
 		if (counter1 == counter2) {
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 }
