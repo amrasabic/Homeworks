@@ -11,5 +11,5 @@ package ba.bitcamp.homeworkBasicComponents.task07;
  *
  */
 public class CircleDrawer {
-	//TODO
+
 }
