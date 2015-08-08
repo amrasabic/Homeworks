@@ -72,7 +72,6 @@ public class CountLetter {
 						t = new Task(line, firstLowerCase);
 						queue.add(t);
 					}
-
 				}
 			}
 
