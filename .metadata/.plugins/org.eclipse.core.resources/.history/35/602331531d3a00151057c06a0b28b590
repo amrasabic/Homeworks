@@ -1,0 +1,46 @@
+package ba.bitcamp.homework25;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+/**
+ * 
+ * @author Amra
+ *
+ */
+public class Client {
+	
+	public static void main(String[] args){
+		
+		try {
+			
+			Socket server = new Socket("localhost", 1989);
+			
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
+			Scanner s = new Scanner(System.in);
+			
+			//writer sends 2 strings to server
+			System.out.println("Insert website in format: https://www.example.com");
+			writer.write(s.nextLine());
+			writer.newLine();
+			System.out.println("Insert website name: example");
+			writer.write(s.nextLine());
+			writer.newLine();
+			writer.flush();
+			
+			
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+}

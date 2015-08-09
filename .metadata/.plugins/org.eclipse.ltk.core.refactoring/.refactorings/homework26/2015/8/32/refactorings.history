@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;ba.bitcamp.homework26&apos; to &apos;ba.bitcamp.homework26.task01&apos;&#x0D;&#x0A;- Original project: &apos;homework26&apos;&#x0D;&#x0A;- Original element: &apos;homework26/src/ba.bitcamp.homework26&apos;&#x0D;&#x0A;- Renamed element: &apos;homework26/src/ba.bitcamp.homework26.task01&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;ba.bitcamp.homework26&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;ba.bitcamp.homework26" name="ba.bitcamp.homework26.task01" qualified="false" references="true" stamp="1438634871459" textual="false" version="1.0"/>
+</session>

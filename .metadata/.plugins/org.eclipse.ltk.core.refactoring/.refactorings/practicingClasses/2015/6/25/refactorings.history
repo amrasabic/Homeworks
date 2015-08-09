@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;ba.bitcamp.practicingClasses.task01.Paintwork&apos; to &apos;Painting&apos;&#x0D;&#x0A;- Original project: &apos;practicingClasses&apos;&#x0D;&#x0A;- Original element: &apos;ba.bitcamp.practicingClasses.task01.Paintwork&apos;&#x0D;&#x0A;- Renamed element: &apos;ba.bitcamp.practicingClasses.task01.Painting&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Paintwork&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;ba.bitcamp.practicingClasses.task01{Paintwork.java[Paintwork" matchStrategy="1" name="Painting" qualified="false" references="true" similarDeclarations="false" stamp="1434586259918" textual="false" version="1.0"/>
+</session>

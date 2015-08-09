@@ -1,0 +1,42 @@
+package ba.bitcamp.homework26.task01;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+public class Client {
+	public static void main(String[] args) {
+
+		try {
+			// trying to connect to server
+			Socket server = new Socket("localhost", 9999);
+
+			// creating writer which will write to server
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+					server.getOutputStream()));
+			// creating scanner for inputs from console
+			Scanner s = new Scanner(System.in);
+
+			writer.write(s.nextLine());
+			writer.newLine();
+			writer.flush();
+			
+			//reader which reads answer from server
+			BufferedReader reader = new BufferedReader(new InputStreamReader(server.getInputStream()));
+			
+			//printing out answer on console
+			System.out.println(reader.readLine());
+
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

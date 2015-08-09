@@ -1,0 +1,140 @@
+package ba.bitcamp.homework27.task02;
+
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ * Koristeci Producer Consumer metodologiju ucitanu sliku renderati u negativ.
+ * Ucitati sliku sa racunara u BufferedImage tako da postoje sve informacije o
+ * svakom pikselu. Koristeci te informacije podijeliti posao na vise Thread-ova
+ * (na proizvoljan, ali efikasan nacin). Svaki Thread mora obrnuti vrijednost
+ * piksela, tj. vrijednost R, G i B oduzeti od 255. Prikazati pomocu GUI-a
+ * rezultat tih operacija.
+ * 
+ * @author Amra
+ *
+ */
+public class BufferedImageWithWorkerThreads extends JFrame {
+
+	private static final long serialVersionUID = 581771036631704354L;
+
+	private static ArrayList<Worker> workers;
+	private static LinkedBlockingQueue<Task> queue;
+
+	private static BufferedImage image = null;
+	private static JPanel panel = new JPanel();
+
+	/**
+	 * Constructor
+	 */
+	public BufferedImageWithWorkerThreads() {
+
+		add(panel);
+
+		panel.add(new JComponent() {
+
+			private static final long serialVersionUID = -2275043305878414198L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+
+				super.paintComponent(g);
+
+				g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+			}
+		});
+
+		setTitle("Buffered Image With Worker Threads");
+		setResizable(false);
+		setSize(600, 600);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
+	/**
+	 * Main
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+
+		try {
+			image = ImageIO.read(new URL("http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg"));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		new BufferedImageWithWorkerThreads();
+		queue = new LinkedBlockingQueue<>();
+		for (int i = 0; i < image.getHeight(); i++) {
+			queue.add(new Task(i, image));
+		}
+
+		workers = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			Worker w = new Worker();
+			w.start();
+			workers.add(w);
+		}
+
+		for (Worker w : workers) {
+			try {
+				w.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		long l = System.currentTimeMillis();
+
+		System.out.println(System.currentTimeMillis() - l);
+	}
+
+	static class Worker extends Thread {
+		@Override
+		public void run() {
+			while (!queue.isEmpty()) {
+				try {
+					Task t = queue.take();
+					t.run();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	static class Task implements Runnable {
+
+		private int j;
+		private BufferedImage img;
+
+		public Task(int j, BufferedImage img) {
+			this.j = j;
+			this.img = img;
+		}
+
+		@Override
+		public void run() {
+
+			for (int i = 0; i < img.getWidth(); i++) {
+				int pixel = img.getRGB(i, j);
+				img.setRGB(i, j, 255 - pixel);
+				// If you sleep thread for one millisecond you will how threads
+				// work
+				panel.repaint();
+			}
+
+		}
+	}
+}

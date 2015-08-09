@@ -1,0 +1,138 @@
+package ba.bitcamp.homework27.task01;
+
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class BufferedImageWithThreads extends JFrame {
+
+	private static final long serialVersionUID = -4466596935989416017L;
+
+	private static BufferedImage img = null;
+	private static JPanel panel;
+	private static ArrayList<Worker> workers;
+	private static LinkedBlockingQueue<Task> tasks;
+
+	public static void main(String[] args) {
+		new BufferedImageWithThreads();
+	}
+
+	public BufferedImageWithThreads() {
+		guiPicture();
+		guiPart();
+		addTasks();
+		addWorkers();
+
+		for (Worker w : workers) {
+			try {
+				w.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		long l = System.currentTimeMillis();
+		System.out.println(System.currentTimeMillis() - l);
+	}
+
+	public void guiPart() {
+		panel = new MyPanel();
+		add(panel);
+
+		setSize(1920, 1080);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setTitle("Stopping multiple threads");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+	}
+
+	public void addTasks() {
+		tasks = new LinkedBlockingQueue<>();
+		for (int i = 0; i < img.getHeight(); i++) {
+			tasks.add(new Task(i, img));
+		}
+
+	}
+
+	public void addWorkers() {
+		workers = new ArrayList<>();
+		for (int i = 0; i < 6; i++) {
+			Worker w = new Worker();
+			w.start();
+			workers.add(w);
+		}
+	}
+
+	public void guiPicture() {
+		try {
+			img = ImageIO
+					.read(new URL(
+							"http://www.hdwallpapersimages.com/wp-content/uploads/2014/01/Winter-Tiger-Wild-Cat-Images.jpg"));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public class MyPanel extends JPanel {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected void paintComponent(Graphics g) {
+
+			super.paintComponent(g);
+
+			g.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+		}
+
+	}
+
+	static class Worker extends Thread {
+		@Override
+		public void run() {
+			while (!tasks.isEmpty()) {
+				try {
+					// Without sleeping finish for 0 ms
+					Thread.sleep(25);
+					tasks.take().run();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				;
+			}
+		}
+	}
+
+	static class Task implements Runnable {
+
+		private int j;
+		private BufferedImage img;
+
+		public Task(int j, BufferedImage img) {
+			this.j = j;
+			this.img = img;
+		}
+
+		@Override
+		public void run() {
+
+			for (int i = 0; i < img.getWidth(); i++) {
+				int pixel = img.getRGB(i, j);
+				img.setRGB(i, j, 255 - pixel);
+				// If you sleep thread for one millisecond you will how threads
+				// work
+				panel.repaint();
+			}
+
+		}
+	}
+}

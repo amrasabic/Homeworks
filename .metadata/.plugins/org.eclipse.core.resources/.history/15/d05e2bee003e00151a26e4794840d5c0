@@ -1,0 +1,157 @@
+package ba.bitcamp.homework27.task02;
+
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+
+/**
+ * Koristeci Producer Consumer metodologiju ucitanu sliku renderati u negativ.
+ * Ucitati sliku sa racunara u BufferedImage tako da postoje sve informacije o
+ * svakom pikselu. Koristeci te informacije podijeliti posao na vise Thread-ova
+ * (na proizvoljan, ali efikasan nacin). Svaki Thread mora obrnuti vrijednost
+ * piksela, tj. vrijednost R, G i B oduzeti od 255. Prikazati pomocu GUI-a
+ * rezultat tih operacija.
+ * 
+ * @author amra.sabic
+ *
+ */
+public class BufferedImageWithWorkerThreads extends JFrame {
+
+	// declaration of parameters
+	private static final long serialVersionUID = 581771036631704354L;
+
+	private static ArrayList<Worker> workers;
+	private static LinkedBlockingQueue<Task> queue;
+
+	private static BufferedImage image = null;
+	private static JPanel panel;
+
+	/**
+	 * Constructor
+	 */
+	public BufferedImageWithWorkerThreads() {
+		panel = new MyPanel();
+		add(panel);
+
+		setTitle("Buffered Image With Worker Threads");
+		setResizable(true);
+		setSize(660, 330);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
+	/**
+	 * My panel
+	 * <p>
+	 * Just paint component.
+	 * 
+	 * @author amra.sabic
+	 *
+	 */
+	public class MyPanel extends JPanel {
+
+		private static final long serialVersionUID = 5773888171389614226L;
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+		}
+
+	}
+
+	/**
+	 * Main
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+	
+		try {
+			image = ImageIO.read(new URL("http://techraptor.net/wp-content/uploads/2015/08/World-of-Warcraft-Lgeion-660x330.png"));
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		new BufferedImageWithWorkerThreads();
+		
+		queue = new LinkedBlockingQueue<>();
+		for (int i = 0; i < image.getHeight(); i++) {
+			queue.add(new Task(i, image));
+		}
+
+		workers = new ArrayList<>();
+		long time = System.currentTimeMillis();
+		for (int i = 0; i < 6; i++) {
+			Worker w = new Worker();
+			w.start();
+			workers.add(w);
+
+			try {
+				w.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("Time [ms]: " + (System.currentTimeMillis() - time));
+	}
+
+	/**
+	 * 
+	 * @author amra.sabic
+	 *
+	 */
+	static class Worker extends Thread {
+		@Override
+		public void run() {
+			while (!queue.isEmpty()) {
+				try {
+					Task t = queue.take();
+					t.run();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @author amra.sabic
+	 *
+	 */
+	static class Task implements Runnable {
+
+		private int j;
+		private BufferedImage img;
+
+		public Task(int j, BufferedImage img) {
+			this.j = j;
+			this.img = img;
+		}
+
+		@Override
+		public void run() {
+
+			for (int i = 0; i < img.getWidth(); i++) {
+				int pixel = img.getRGB(i, j);
+				img.setRGB(i, j, 255 - pixel);
+
+				panel.repaint();
+			}
+
+		}
+	}
+}
