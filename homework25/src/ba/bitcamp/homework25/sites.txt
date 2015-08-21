@@ -1,0 +1,5 @@
+https://www.google.com Google
+https://www.youtube.com YouTube
+http://www.stackoverflow.com StackoverFlow
+https://www.github.com GitHub 
+https://www.translate.google.com Translate 
